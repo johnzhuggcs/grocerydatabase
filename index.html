@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="controller.js"></script>
+
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm bg-dark">
+		<ul class="navbar-nav">
+			<li id="EmployeeNav" class="nav-item dropdown" style="display: none;">
+				<a class="nav-link" data-toggle="dropdown">
+					<button class="btn btn-danger fa fa-bars"></button>
+				</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="AddProducts()">Add Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenDeleteProducts()">Delete Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>	
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenRestockProducts()">Restock Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Account</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAddDeal()">Add Deal</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewDeal()">View Deal</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateDeal()">Update Deal</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAverageBrand()">Average Brand</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAverageItem()">Average Item</button></a>
+				</div>
+			</li>
+			<li id="CustomerNav" class="nav-item dropdown" style="display: none;">
+				<a class="nav-link" data-toggle="dropdown">
+					<button class="btn btn-primary fa fa-bars"></button>
+				</a>
+				<div class="dropdown-menu">
+					<form method="POST" action="index.php">
+						<a class="dropdown-item nav-link">
+							<input class="btn btn-primary" Type="submit" name="getProducts" value="Buy Products" onclick="OpenBuyProducts()">
+						</a>
+					</form>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewCart()">View Cart</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenShippingInfo()">Shipping Info</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>	
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateShippingInfo()">Update Shipping Info</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenFilter()">Filter Attribute</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewOrders()">View Orders</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewShipping()">View Shipping</button></a>
+				</div>
+			</li>
+			<li id="createUser">
+				<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Create User</button></a>
+			</li>
+		</ul>
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" type="submit" value="Item All Order" name="item_all_order">
+					</form>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" type="submit" value="Popular Item" name="item_popular" > 
+					</form>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" type="submit" value="Display All Products" name="displayall">
+					</form>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" type="submit" onclick="resetLS()" value="Reset" name="reset">
+					</form>
+				</a>
+			</li>
+			<li class="nav-item " id="logoutButton" >
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-danger" type="submit" onclick="logout()" value="Logout" name="logoff">
+					</form>
+				</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="logon" class="container card text-center">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Select User </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-5">
+					<h5>User Type</h5>
+				</div>
+				<div class="col-md-5">
+					<h5>User ID</h5>
+				</div>
+				<div class="col-md-2">
+					<h5>&nbsp; </h5>
+				</div>
+			</div>
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-5">
+						<Select id="userSelect" class="form-control">
+							<option value="0">&nbsp;</option>
+							<option value="1">Customer</option>
+							<option value="2">Employee</option>
+						</Select>
+					</div>
+					<div class="col-md-5">
+						<Select id="nameSelect" name="nameSelect" class="form-control">
+						</Select>
+					</div>
+					<div class="col-md-2">
+							<input class="btn btn-primary" Type="submit" name="selectAccount" value="Submit" onclick="setUser()">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="Filter" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Filter Products</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Attribute:</h5>
+						</div>
+						<div class="col-md-8">
+							<Select name="attr" class="form-control">
+								<option value="0">&nbsp;</option>
+								<option value="pid">ID</option>
+								<option value="price">Price</option>
+								<option value="expire_date">Expire Date</option>
+								<option value="ingredients">Ingredients</option>
+								<option value="cfoot">Carbon Footprint</option>
+								<option value="origin">Origin</option>
+								<option value="quantity">Stock Quantity</option>
+								<option value="name">Name</option>
+								<option value="brand">Brand</option>
+								<option value="description">Description</option>
+								<option value="rpoint">Reward Points</option>
+							</Select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Price <  :</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="sel_price">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" name="select_view">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenFilter()">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="Account" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Create User</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Name:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="Name">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Email:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="Email">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" onclick="createUser()" name="create_customer">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenAccount()">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="UpdateShippingInfo" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Update Shipping Info</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>New Shipping Address:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="new_address">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Shipping Info Number:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="shipping_info_no">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" name="update_shipping_address">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenUpdateShippingInfo()">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="shippingInfo" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Add Shipping Info</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Billing Adress:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="Billing_address">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Shipping Address:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="Shipping_address">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Phone Number:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="Phone_number">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Shipping Method:</h5>
+						</div>
+						<div class="col-md-8">
+							<select name="Shipping_method" class="form-control">
+								<option>Express</option>
+								<option>Business</option>
+								<option>Ground</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Delivery Type:</h5>
+						</div>
+						<div class="col-md-8">
+							<select name="delivery_type" class="form-control">
+								<option>Home Delivery</option>
+								<option>In Store Pick Up</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" name="create_shipinfo">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenShippingInfo()">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="CustomerPremium" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Upgrade Customers Accounts To Premium </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="modify_prem">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="averageItem" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Average Price by Item </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-4">
+						<h4>Item:</h4>
+					</div>
+					<div class="col-md-8">
+						<input class="form-control" type="text" name="BOUND">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="item_price_bound">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="averageBrand" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Average Price by Brand</h4> 
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-4">
+						<h4>Brand:</h4>
+					</div>
+					<div class="col-md-8">
+						<input class="form-control" type="text" name="BOUND">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="brand_price_bound">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="addDeal" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Add Deal </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-4">
+						<h4>Start Date</h4>
+					</div>
+					<div class="col-md-4">
+						<h4>End Date</h4>
+					</div>
+					<div class="col-md-4">
+						<h4>Shared Link</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<input class="form-control" type="text" name="start_date">
+					</div>
+					<div class="col-md-4">
+						<input class="form-control" type="text" name="end_date">
+					</div>
+					<div class="col-md-4">
+						<input class="form-control" type="text" name="shared_link">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<h4>Discount</h4>
+					</div>
+					<div class="col-md-6">
+						<h4>Premium Only</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="discount">
+					</div>
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="Premium_only">
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="insertDeal">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="viewDeal" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Delete Deal </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-2">
+						<h4>Deal ID</h4>
+					</div>
+					<div class="col-md-7">
+						<input class="form-control" type="text" name="DID">
+					</div>
+					<div class="col-md-3">
+						<input class="btn btn-primary" type="submit" value="Delete" name="deleteDeal">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="updateDeal" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Update Deal </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-6">
+						<h4>Old Deal ID</h4>
+					</div>
+					<div class="col-md-6">
+						<h4>New Deal ID</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="new_did">
+					</div>
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="old_did">
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="update_deal">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="addProducts" class="card container text-center" style="display: none;" >
+		<div class="card-header">
+			<h4>Add Products</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Deal ID</th>
+										<th>Price</th>
+										<th>Expire date</th>
+										<th>Ingredients</th>
+										<th>Carbon Footprint</th>
+									</tr>
+								</thead> 
+								<tbody>
+									<tr>
+										<td><input class="form-control" type="text" name="DID" ></td>
+										<td><input class="form-control" type="text" name="price" ></td>
+										<td><input class="form-control" type="text" name="expire_date" ></td>
+										<td><input class="form-control" type="text" name="Ingredients" ></td>
+										<td><input class="form-control" type="text" name="carbon_footprint" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Origin</th>
+										<th>Stock Quantity</th>
+										<th>Name</th>
+										<th>Brand</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><input class="form-control" type="text" name="origin" ></td>
+										<td><input class="form-control" type="text" name="stock_quantity" ></td>
+										<td><input class="form-control" type="text" name="name" ></td>
+										<td><input class="form-control" type="text" name="brand" ></td>
+										<td><input class="form-control" type="text" name="description" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Reward Points</th>
+										<th>Category</th>
+										<th>Weight</th>
+										<th>Allergies</th>
+										<th>Volume</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><input class="form-control" type="text" name="reward_points" ></td>
+										<td><input class="form-control" type="text" name="reward_points" ></td>
+										<td><input class="form-control" type="text" name="Weight" ></td>
+										<td><input class="form-control" type="text" name="Allergies" ></td>
+										<td><input class="form-control" type="text" name="Volume" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><input class="form-control" type="text" name="instruction" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<input class="btn btn-primary" type="submit" value="insert" name="AddProduct"></p>
+				</div>
+			</form>
+		</div>
+		<div class="card-header">
+			<h4>All Products</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table name="ViewAllProductsTable" id="ViewAllProductsTable" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Price</th>
+										<th>Expire date</th>
+										<th>Ingredients</th>
+										<th>Carbon Footprint</th>
+										<th>Origin</th>
+										<th>Stock_quantity</th>
+										<th>Name</th>
+										<th>Brand</th>
+										<th>description</th>
+										<th>Reward Points</th>
+										<th>Deal ID</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div id="restockProducts" class=" card container" style="display: none;">
+		<div class="card-header">
+			<h4> Restock products: </h4>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-12">
+					<form method="POST" action="index.php">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Product ID</th>
+									<th>Added Quantity</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="form-control" type="text" name="pid" ></td>
+									<td><input class="form-control" type="text" name="addq" ></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<input class="btn btn-primary" type="submit" value="update" name="restock">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="DeleteProducts" class="card container text-center" style="display: none;" >
+		<div class="card-header">
+			<h4>Delete Products</h4>
+		</div>
+		<div class="card-body">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12" style="overflow-x: auto;">
+						<table name="DeleteProductsTable" id="DeleteProductsTable" class="table table-bordered">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Price</th>
+									<th>Expire date</th>
+									<th>Ingredients</th>
+									<th>Carbon Footprint</th>
+									<th>Origin</th>
+									<th>Stock_quantity</th>
+									<th>Name</th>
+									<th>Brand</th>
+									<th>description</th>
+									<th>Reward Points</th>
+									<th>Deal ID</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-2">
+							<h4>PID</h4>
+						</div>
+						<div class="col-md-6">
+							<input class="form-control" type="text" name="pid">
+						</div>
+						<div class="col-md-4">
+							<input type="submit" value="Delete" class="btn btn-danger" name="deleteProduct">
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<div class="row text-center">
+				<div class="col-md-12">
+					<input class="btn btn-danger" type="Submit" value="Close" onclick="closeBuyProduct()">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="BuyProducts" class="card container text-center" style="display: none;" >
+		<div class="card-header">
+			<h4>Add Products To Cart</h4>
+		</div>
+		<div class="card-body">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12" style="overflow-x: auto;">
+						<table name="BuyProductsTable" id="BuyProductsTable" class="table table-bordered">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Price</th>
+									<th>Expire date</th>
+									<th>Ingredients</th>
+									<th>Carbon Footprint</th>
+									<th>Origin</th>
+									<th>Stock_quantity</th>
+									<th>Name</th>
+									<th>Brand</th>
+									<th>description</th>
+									<th>Reward Points</th>
+									<th>Deal ID</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-2">
+							<h4>PID</h4>
+						</div>
+						<div class="col-md-6">
+							<input class="form-control" type="text" name="pid">
+						</div>
+						<div class="col-md-4">
+							<input type="submit" value="Add to Cart" class="btn btn-primary" name="add_to_cart">
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<div class="row text-center">
+				<div class="col-md-12">
+					<input class="btn btn-danger" type="Submit" value="Close" onclick="closeBuyProduct()">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="viewCart" class="card container" style="display: none;" >
+		<div class="card-header text-center">
+			<h4>Veiw Cart</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Purchase Method:</h5>
+						</div>
+						<div class="col-md-8">
+							<select class="form-control" name="Payment_method">
+								<option>Visa</option>
+								<option>Mastercard</option>
+								<option>PayPal</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table name="cartTable" id="cartTable" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Product ID</th>
+										<th>Order Number</th>
+									</tr>
+								</thead> 
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-md-3">&nbsp;</div>
+					<div class="col-md-3">
+						<input class="btn btn-success" type="submit" value="Submit Order" name="place_order">
+					</div>
+					<div class="col-md-3">
+						<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenViewCart()">
+					</div>
+					<div class="col-md-3">&nbsp;</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="viewOrders" class="card container" style="display: none;" >
+		<div class="card-header text-center">
+			<h4>Veiw Orders</h4>
+		</div>
+		<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table name="PlacedOrderTable" id="PlacedOrderTable" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Order Number</th>
+										<th>Order Date</th>
+									</tr>
+								</thead> 
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-md-3">&nbsp;</div>
+					<div class="col-md-6">
+						<button class="btn btn-danger" onclick="OpenViewOrders()">Close</button>
+					</div>
+					<div class="col-md-3">&nbsp;</div>
+				</div>
+		</div>
+	</div>
+
+	<div id="viewShipping" class="card container" style="display: none;" >
+		<div class="card-header text-center">
+			<h4>Veiw Shipping Info</h4>
+		</div>
+		<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table name="ShippingTable" id="ShippingTable" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Shipping ID</th>
+										<th>Phone Number</th>
+										<th>Billing Address</th>
+										<th>Shipping Address</th>
+										<th>Delivery Type</th>
+										<th>Shipping Method</th>
+									</tr>
+								</thead> 
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-md-3">&nbsp;</div>
+					<div class="col-md-6">
+						<button class="btn btn-danger" onclick="OpenViewOrders()">Close</button>
+					</div>
+					<div class="col-md-3">&nbsp;</div>
+				</div>
+		</div>
+	</div>
+</body>
+</html>
