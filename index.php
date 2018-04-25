@@ -9,7 +9,7 @@ session_start();
 
 // ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 // session_start();
-phpinfo();
+//phpinfo();
 
 //debugging info
 

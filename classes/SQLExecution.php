@@ -16,22 +16,22 @@ class SQLExecution
     function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
         //echo ('<div class="card container text-center" ><div class="card-body"><h5>running ".$cmdstr."</h5></div></div>');
         global $db_conn, $success;
-        $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
+        $statement = mysqli_prepare($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
 
         if (!$statement) {
             //echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-            $e = OCI_Error($db_conn); // For OCIParse errors pass the
+            $e = mysqli_error($db_conn); // For OCIParse errors pass the
             // connection handle
             echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e['message']).'</h5></div></div>');
             $success = False;
         }
 
-        $r = OCIExecute($statement, OCI_DEFAULT);
+        $r = mysqli_execute($statement);
 
         if (!$r) {
             // echo "<div class='card'><br>Cannot execute the following command: " . $cmdstr . "<br></div>";
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot execute the following command:'.$cmdstr.'</h5></div></div>');
-            $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
+            $e = mysqli_error($statement); // For OCIExecute errors pass the statementhandle
             echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e['message']).'</h5></div></div>');
             $success = False;
         } else {
@@ -41,7 +41,7 @@ class SQLExecution
 
     }
 
-    function executeBoundSQL($cmdstr, $list) {
+    function executeBoundSQL($cmdstr, $list, $type) {
         /* Sometimes a same statement will be excuted for severl times, only
          the value of variables need to be changed.
          In this case you don't need to create the statement several times;
@@ -55,7 +55,7 @@ class SQLExecution
         if (!$statement) {
             echo "<div class='card'><br>Cannot parse the following command: " . $cmdstr . "<br></div>";
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot parse the following command:'.$cmdstr.'</h5></div></div>');
-            $e = OCI_Error($db_conn);
+            $e = mysqli_error($db_conn);
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot parse the following command:'.htmlentities($e['message']).'</h5></div></div>');
             $success = False;
         }
@@ -83,7 +83,7 @@ class SQLExecution
 
             }
 
-            $r = OCIExecute($statement, OCI_DEFAULT);
+            $r = mysqli_execute($statement);
             if (!$r) {
                 echo "<div class='card'><br>Cannot execute the following command: " . $cmdstr . "<br>";
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot execute the following command:'.$cmdstr.'</h5></div></div>');
