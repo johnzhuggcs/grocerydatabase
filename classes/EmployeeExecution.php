@@ -141,7 +141,7 @@ class EmployeeExecution
             }
             $_SESSION["ProductId"] = $_SESSION["ProductId"] + 1;
 
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
 
 
         } //delete product
@@ -158,7 +158,7 @@ class EmployeeExecution
 
             $checkRecordBeverage = $this->SQLExecution->executePlainSQL
             ("select PID from Beverage WHERE PID = '$tempProductID'");;
-            $checkRecordArray = OCI_Fetch_Array($checkRecordBeverage, OCI_BOTH);
+            $checkRecordArray = mysqli_fetch_array($checkRecordBeverage);
 
             if(count($checkRecordArray) > 1){
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>"Beverage"</h5></div></div>');
@@ -169,7 +169,7 @@ class EmployeeExecution
             }else{
                 $checkRecordFood = $this->SQLExecution->executePlainSQL
                 ("select PID from Food WHERE PID = '$tempProductID'");;
-                $checkRecordArray = OCI_Fetch_Array($checkRecordFood, OCI_BOTH);
+                $checkRecordArray = mysqli_fetch_array($checkRecordFood);
 
                 if(count($checkRecordArray) > 1){
                     //echo ('<div class="card container text-center" ><div class="card-body"><h5>"Food"</h5></div></div>');
@@ -180,7 +180,7 @@ class EmployeeExecution
                 }else{
                     $checkRecordPersonal = $this->SQLExecution->executePlainSQL
                     ("select PID from PersonalCare WHERE order_no = '$tempProductID'");;
-                    $checkRecordArray = OCI_Fetch_Array($checkRecordPersonal, OCI_BOTH);
+                    $checkRecordArray = mysqli_fetch_array($checkRecordPersonal);
 
                     if(count($checkRecordArray) > 1){
                         //echo ('<div class="card container text-center" ><div class="card-body"><h5>"Personal"</h5></div></div>');
@@ -193,14 +193,14 @@ class EmployeeExecution
             }
 
             $this->SQLExecution->executePlainSQL("delete from product_discount where PID = '$tempProductID'");
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
             $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
             //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
 
             $productArray = array();
             $counter = 0;
-            while($tempResultArray = OCI_Fetch_Array($productResult, OCI_BOTH)){
+            while($tempResultArray = mysqli_fetch_array($productResult)){
                 $productArrayX = array();
 
                 for($x = 0; $x< 12; $x++){
@@ -226,7 +226,7 @@ class EmployeeExecution
             $this->SQLExecution->executeBoundSQL("update product_discount set stock_quantity=stock_quantity+:bind2 where pid=:bind1", $alltuples);
             //insert into stock table
             //todo
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
 
         } // employee create new deal
         else if (array_key_exists('insertDeal', $_POST)) {
@@ -243,7 +243,7 @@ class EmployeeExecution
             );
             $this->SQLExecution->executeBoundSQL("insert into deal values (:bind1,:bind2,:bind3,:bind4,:bind5,:bind6)", $alltuples);
 
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
 
             $_SESSION["DID"] = $_SESSION["DID"] + 1;
 
@@ -257,7 +257,7 @@ class EmployeeExecution
             );
             //insert into deal table
             $this->SQLExecution->executeBoundSQL("delete from product_discount where did=:bind1", $alltuples);
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
         } //find the item in every order, finding the one that is present in all order, for customer to know what item is "necessary"
         else if (array_key_exists('item_all_order', $_POST)) {
             $result = $this->SQLExecution->executePlainSQL("select PID, 
@@ -273,7 +273,7 @@ where p.PID = (Select PID
    Minus (select order_no, PID from Contains))))");
 
             $this->Utility->printDivision($result);
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
 
         } //find the most popular item / most purchased item
         else if (array_key_exists('item_popular', $_POST)) {
@@ -285,7 +285,7 @@ where p.PID = (Select PID
             }*/
             print_r($popularresult);
             $this->Utility->printPopular($popularresult);
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
         } //find the most expensive / cheapest  / average price item
         else if (array_key_exists('item_price_bound', $_POST)) {
             $tuple = array(
@@ -308,11 +308,11 @@ where p.PID = (Select PID
                     echo "<br> The AVG price item: <br>";
             }
 
-            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            while ($row = mysqli_fetch_array($result)) {
                 echo "<tr><td>" . $row["PID"] . "</td><td>" . $row["name"] . "</td><td>" . $row["price"] . "</td></tr>";
             }
 
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
         } // find the most and least expensive brand
         else if (array_key_exists('brand_price_bound', $_POST)) {
             $tuple = array(
@@ -339,11 +339,11 @@ where p.PID = (Select PID
 
             }
 
-            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            while ($row = mysqli_fetch_array($result)) {
                 echo "<tr><td>" . $row["brand"] . "</td><td>" . $row["av"] . "</td></tr>";
             }
 
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
         } //update deal DID then update product's DID : on update cascade
         else if (array_key_exists('update_deal', $_POST)) {
             $tuple = array(
@@ -357,7 +357,7 @@ where p.PID = (Select PID
             $this->SQLExecution->executeBoundSQL("update Access_to set did=:bind2 where did=:bind1", $alltuples);
             $this->SQLExecution->executeBoundSQL("update product_discount set did=:bind2 where did=:bind1", $alltuples);
 
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
         }
 
 

@@ -50,7 +50,7 @@ class SQLExecution
         //echo ('<div class="card container text-center" ><div class="card-body"><h5>1</h5></div></div>');
         //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$cmdstr.'</h5></div></div>');
         global $db_conn, $success;
-        $statement = OCIParse($db_conn, $cmdstr);
+        $statement = mysqli_prepare($db_conn, $cmdstr);
 
         if (!$statement) {
             echo "<div class='card'><br>Cannot parse the following command: " . $cmdstr . "<br></div>";
@@ -60,12 +60,25 @@ class SQLExecution
             $success = False;
         }
         foreach ($list as $tuple) {
+            foreach ($tuple as $bind) {
+                //echo $val;
+
+                //echo ('<div class="card container text-center" ><div class="card"><br>".$bind."<br></div></div>');
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$bind.'</h5></div></div>');
+                mysqli_stmt_bind_param($statement, "s", $bind);
+                //OCIBindByName($statement, $bind, $val);
+                unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+
+            }
+
             foreach ($tuple as $bind => $val) {
                 //echo $val;
 
                 //echo ('<div class="card container text-center" ><div class="card"><br>".$bind."<br></div></div>');
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$bind.'</h5></div></div>');
-                OCIBindByName($statement, $bind, $val);
+                mysqli_stmt_bind_param($statement, "s", $bind);
+                $bind = $val;
+                //OCIBindByName($statement, $bind, $val);
                 unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
 
             }

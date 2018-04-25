@@ -36,7 +36,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -85,7 +85,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -129,7 +129,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -169,7 +169,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -206,7 +206,7 @@ class Utility
 									</tr>
 								</thead>');
 
-    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+    while ($row = mysqli_fetch_array($result)) {
 
         echo('<tbody>
             <tr>
@@ -238,7 +238,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -271,7 +271,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -302,7 +302,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -334,7 +334,7 @@ class Utility
 									</tr>
 								</thead>');
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        while ($row = mysqli_fetch_array($result)) {
 
             echo('<tbody>
             <tr>
@@ -356,7 +356,7 @@ class Utility
     function sessionResult($result){
         $resultArray = array();
         $counter = 0;
-        while($tempResultArray = OCI_Fetch_Array($result, OCI_BOTH)){
+        while($tempResultArray = mysqli_fetch_array($result)){
             $resultArray[$counter] = $tempResultArray[0];
             $counter++;
             echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');

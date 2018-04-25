@@ -389,7 +389,7 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
 
         foreach($this->allCreateTables as $createTable){
             $this->SQLExecution->executePlainSql($createTable);
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
         }
 
     }
@@ -399,28 +399,28 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
 
         $this->SQLExecution->executeBoundSQL("insert into Employee values(:bind1, :bind2)", $this->Employees);
         $this->SQLExecution->executeBoundSQL("insert into Customer values(:bind1, :bind2, :bind3, :bind4, :bind5)", $this->Customers);
-        OCICommit($db_conn);
+        mysqli_commit($db_conn);
         $this->SQLExecution->executeBoundSQL("insert into Deal values(:bind1, :bind2, :bind3, :bind4, :bind5, :bind6)", $this->Deal);
         $this->SQLExecution->executeBoundSQL("insert into product_discount values(:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9, :bind10, :bind11, :bind12)", $this->Product);
-        OCICommit($db_conn);
+        mysqli_commit($db_conn);
         $this->SQLExecution->executeBoundSQL("insert into Food values(:bind1, :bind2, :bind3)", $this->Food);
         $this->SQLExecution->executeBoundSQL("insert into Beverage values(:bind1, :bind2, :bind3)", $this->Beverage);
         $this->SQLExecution->executeBoundSQL("insert into PersonalCare values(:bind1, :bind2)", $this->Personal);
-        OCICommit($db_conn);
+        mysqli_commit($db_conn);
         $this->SQLExecution->executeBoundSQL("insert into Shipping_info values(:bind0, :bind1, :bind2, :bind3, :bind4, :bind5)", $this->Shipping);
-        OCICommit($db_conn);
+        mysqli_commit($db_conn);
         $this->SQLExecution->executeBoundSQL("insert into owns values(:bind0, :bind1)", $this->owns);
-        OCICommit($db_conn);
+        mysqli_commit($db_conn);
         $this->SQLExecution->executeBoundSQL("insert into Order_placedby_shippedwith values(:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9)", $this->Orders);
         $this->SQLExecution->executeBoundSQL("insert into Contains values(:bind0, :bind1)", $this->Contains);
-        OCICommit($db_conn);
+        mysqli_commit($db_conn);
     }
 
     function dropAll(){
         global $db_conn;
         foreach($this->allDropTables as $dropTable){
             $this->SQLExecution->executePlainSQL($dropTable);
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
         }
 
     }

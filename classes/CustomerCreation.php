@@ -49,7 +49,7 @@ class CustomerCreation
                 $tuple
             );
             $this->SQLExecution->executeBoundSQL("insert into customer values (:bind1,:bind2,:bind3,:bind4,:bind5)", $alltuples);
-            OCICommit($db_conn);
+            mysqli_commit($db_conn);
             $_SESSION['customerNo'] = $_SESSION['customerNo'] + 1;
             $_SESSION["AccountID"] = $newCustomerID;
 

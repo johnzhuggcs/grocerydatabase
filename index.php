@@ -1,5 +1,5 @@
 <?php
-ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+//ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 session_start();
 
 // orting(-1);
@@ -9,7 +9,7 @@ session_start();
 
 // ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 // session_start();
-//phpinfo();
+phpinfo();
 
 //debugging info
 
@@ -70,7 +70,7 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
 
     $employeeArray = array();
     $counter = 0;
-    while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
+    while($tempResultArray = mysqli_fetch_array($AccountInitializer->getAllEmployees(), MYSQLI_BOTH)){
         $employeeArray[$counter] = $tempResultArray[0];
         $counter++;
         //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
@@ -80,7 +80,7 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
 
     $customerArray = array();
     $counter = 0;
-    while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
+    while($tempResultArray = mysqli_fetch_array($AccountInitializer->getAllCustomers(), MYSQLI_BOTH)){
         $customerArray[$counter] = $tempResultArray[0];
         $counter++;
         //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
@@ -136,7 +136,7 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
         }
     }else{
         echo "cannot connect";
-        $e = OCI_Error(); // For OCILogon errors pass no handle
+        $e = mysqli_error(); // For OCILogon errors pass no handle
         echo htmlentities($e['message']);
     }
 } else{

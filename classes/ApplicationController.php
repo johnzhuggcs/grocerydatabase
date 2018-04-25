@@ -111,7 +111,7 @@ class ApplicationController
             } else if (array_key_exists('getProducts', $_POST)){
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
                 $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
-                OCICommit($db_conn);
+                mysqli_commit($db_conn);
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
 
                 $productArray = array();
@@ -154,7 +154,7 @@ class ApplicationController
                 $this->Utility->printShipping($shippingInfoOnlyResult);
                 $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
                 $this->Utility->printShippingOwns($shippingInfowithCustomer);
-                OCICommit($db_conn);
+                mysqli_commit($db_conn);
                 header("location: index.php");
             }
             else {
@@ -173,11 +173,11 @@ class ApplicationController
                 $this->Utility->printShipping($shippingInfoOnlyResult);
                 $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
                 $this->Utility->printShippingOwns($shippingInfowithCustomer);
-                OCICommit($db_conn);
+                mysqli_commit($db_conn);
             }
 
             //Commit to save changes...
-            OCILogoff($db_conn);
+            mysqli_close($db_conn);
         } else {
             echo ('<div class="card container text-center" ><div class="card-body"><h5>cannot connect</h5></div></div>');
 
