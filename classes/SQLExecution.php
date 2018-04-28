@@ -22,17 +22,17 @@ class SQLExecution
             //echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
             $e = mysqli_error($db_conn); // For OCIParse errors pass the
             // connection handle
-            echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e['message']).'</h5></div></div>');
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e).'</h5></div></div>');
             $success = False;
         }
 
-        $r = mysqli_execute($statement);
+        $r = mysqli_stmt_execute($statement);
 
         if (!$r) {
             // echo "<div class='card'><br>Cannot execute the following command: " . $cmdstr . "<br></div>";
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot execute the following command:'.$cmdstr.'</h5></div></div>');
-            $e = mysqli_error($statement); // For OCIExecute errors pass the statementhandle
-            echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e['message']).'</h5></div></div>');
+            $e = mysqli_error($db_conn); // For OCIExecute errors pass the statementhandle
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e).'</h5></div></div>');
             $success = False;
         } else {
 
@@ -56,16 +56,28 @@ class SQLExecution
             echo "<div class='card'><br>Cannot parse the following command: " . $cmdstr . "<br></div>";
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot parse the following command:'.$cmdstr.'</h5></div></div>');
             $e = mysqli_error($db_conn);
-            echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot parse the following command:'.htmlentities($e['message']).'</h5></div></div>');
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot parse the following command:'.htmlentities($e).'</h5></div></div>');
             $success = False;
         }
-        foreach ($list as $tuple) {
+
+        foreach($list as $tuple){
+            $list = array_merge(array($type), $tuple);
+            $tmp = array();
+            foreach($list as $key => $value) $tmp[$key] = &$list[$key];
+            call_user_func_array(array($statement, 'bind_param'), $tmp);
+            mysqli_stmt_execute($statement);
+        }
+
+
+
+        /*foreach ($list as $tuple) {
             foreach ($tuple as $bind) {
                 //echo $val;
 
                 //echo ('<div class="card container text-center" ><div class="card"><br>".$bind."<br></div></div>');
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$bind.'</h5></div></div>');
                 mysqli_stmt_bind_param($statement, "s", $bind);
+
                 //OCIBindByName($statement, $bind, $val);
                 unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
 
@@ -91,7 +103,7 @@ class SQLExecution
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e['message']).'</h5></div></div>');
                 $success = False;
             }
-        }
+        }*/
 
     }
 }
