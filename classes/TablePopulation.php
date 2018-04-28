@@ -410,10 +410,12 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
         mysqli_commit($db_conn);
         $this->SQLExecution->executeBoundSQL("insert into Shipping_info values(?, ?, ?, ?, ?, ?)", $this->Shipping, "ssssss");
         mysqli_commit($db_conn);
-        $this->SQLExecution->executeBoundSQL("insert into owns values(?, )", $this->owns, "ss");
+        $this->SQLExecution->executeBoundSQL("insert into owns values(?,? )", $this->owns, "ss");
         mysqli_commit($db_conn);
-        $this->SQLExecution->executeBoundSQL("insert into Order_placedby_shippedwith values(?, ?, ?, ?, ?, ?, ?, ?, ?)", $this->Orders);
-        $this->SQLExecution->executeBoundSQL("insert into Contains values(bind0, bind1)", $this->Contains);
+
+        $this->SQLExecution->executeBoundSQL("insert into Order_placedby_shippedwith values(?, ?, ?, ?, ?, ?, ?, ?, ?)", $this->Orders, "ssisisiss" );
+
+        $this->SQLExecution->executeBoundSQL("insert into Contains values(?, ?)", $this->Contains, "ss");
         mysqli_commit($db_conn);
     }
 
