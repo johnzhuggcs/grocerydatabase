@@ -52,8 +52,10 @@ class AccountInitializer
             }
             $this->EmployeeResults = $this->SQLExecution->executePlainSQL("select Employee_ID from Employee");
             mysqli_store_result($db_conn);
+            mysqli_stmt_bind_result($db_conn, $this->EmployeeResults);
             $this->CustomerResults = $this->SQLExecution->executePlainSQL("select Account_no from Customer");
             mysqli_store_result($db_conn);
+            mysqli_stmt_bind_result($db_conn, $this->CustomerResults);
             //$this->Utility->printResult($this->CustomerResults);
             mysqli_commit($db_conn);
 
