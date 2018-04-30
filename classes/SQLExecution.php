@@ -27,6 +27,8 @@ class SQLExecution
         }
 
         $r = mysqli_stmt_execute($statement);
+        $statement = mysqli_store_result($db_conn);
+        //mysqli_stmt_bind_result($statement, $r);
 
         if (!$r) {
             // echo "<div class='card'><br>Cannot execute the following command: " . $cmdstr . "<br></div>";
@@ -67,43 +69,6 @@ class SQLExecution
             call_user_func_array(array($statement, 'bind_param'), $tmp);
             mysqli_stmt_execute($statement);
         }
-
-
-
-        /*foreach ($list as $tuple) {
-            foreach ($tuple as $bind) {
-                //echo $val;
-
-                //echo ('<div class="card container text-center" ><div class="card"><br>".$bind."<br></div></div>');
-                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$bind.'</h5></div></div>');
-                mysqli_stmt_bind_param($statement, "s", $bind);
-
-                //OCIBindByName($statement, $bind, $val);
-                unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
-
-            }
-
-            foreach ($tuple as $bind => $val) {
-                //echo $val;
-
-                //echo ('<div class="card container text-center" ><div class="card"><br>".$bind."<br></div></div>');
-                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$bind.'</h5></div></div>');
-                mysqli_stmt_bind_param($statement, "s", $bind);
-                $bind = $val;
-                //OCIBindByName($statement, $bind, $val);
-                unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
-
-            }
-
-            $r = mysqli_execute($statement);
-            if (!$r) {
-                echo "<div class='card'><br>Cannot execute the following command: " . $cmdstr . "<br>";
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot execute the following command:'.$cmdstr.'</h5></div></div>');
-                $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e['message']).'</h5></div></div>');
-                $success = False;
-            }
-        }*/
 
     }
 }
